@@ -1,0 +1,17 @@
+# SSPANEL_GET
+Chinese Language：  
+支持使用`SSPANEL_GET`搭建的机场，自动注册、登录、获取订阅地址。
+|文件|用途|
+|-|-|
+|SSPANEL_GET.sh|软件Linux Shell原型|
+|ssru6.pw.yml|shell脚本的配置文件样品|
+|SSPANEL_GET.e|软件易语言实现|
+|SSPANEL_GET.ini|易语言版配置文件|
+|SSPANEL_GET.ico|软件图标|
+
+## ToDo
+C 语言版本和Python3版本
+
+# LICENSE
+
+Copyright © 2019-present. This project is [Mozilla 2.0](https://github.com/Qs315490/SSPANEL_GET/blob/master/LICENSE) licensed.
