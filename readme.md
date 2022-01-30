@@ -14,4 +14,4 @@ C 语言版本和Python3版本
 
 # LICENSE
 
-Copyright © 2019-present. This project is [Mozilla 2.0](https://github.com/Qs315490/SSPANEL_GET/blob/master/LICENSE) licensed.
+Copyright © 2019-present. This project is [Mozilla 2.0](https://github.com/Qs315490/SSPANEL_GET/blob/main/License) licensed.
