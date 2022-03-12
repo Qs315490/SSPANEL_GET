@@ -1,6 +1,5 @@
 import random
 import requests as rq
-import json
 import re
 
 url = "1.swgj.xyz"
