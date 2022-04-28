@@ -1,4 +1,3 @@
-from pydoc import isdata
 import random
 import re
 import sys
