@@ -1,13 +1,15 @@
+from pydoc import isdata
 import random
 import re
 import sys
 
 import requests
 
-url = "1.swgj.xyz"
-tok = "b=3"
+url = "cxkv2.xyz"
+tok = "u=2"
 vcode = "geetest"
 gui=False
+isDebug = True if sys.gettrace() else False
 
 def do_help():
     print(sys.argv[0], """[选项 [值]] 或 [选项=[值]]
@@ -26,7 +28,7 @@ def do_rule(new_str: str, rule="."):
         quit()
 
 # 开始解析
-i = 0
+i = 1
 arg = sys.argv
 while i < len(arg):
     if arg[i][0] == "-":
@@ -74,7 +76,17 @@ while i < len(arg):
         elif arg[i][1]== "g":
             # -g
             gui=True
+    if "." in arg[i]:
+        url = do_rule(arg[i])
+    if "=" in arg[i]:
+        tok = do_rule(arg[i], "=")
     i += 1
+
+if isDebug:
+    print("argv: ", sys.argv)
+    print("url:", url,end=" ")
+    print("token:", tok)
+    quit()
 
 # 生成邮箱
 email_num = random.randint(100000000, 999999999)
