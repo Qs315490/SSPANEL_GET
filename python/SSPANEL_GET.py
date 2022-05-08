@@ -1,6 +1,9 @@
 import random
 import re
 import sys
+import threading
+import tkinter
+from tkinter import messagebox
 
 try:
     import requests
@@ -92,24 +95,26 @@ if isDebug:
     print("argv:", sys.argv)
     print("url:", url, end=" ")
     print("token:", tok)
-    quit()
+    print("gui:", gui)
 
-# 生成邮箱
-email_num = random.randint(100000000, 999999999)
-print(str(email_num) + "@qs.com")
+
+def get_email() -> int:
+    # 生成邮箱
+    return random.randint(100000000, 999999999)
+
 
 # 保持连接
 web_session = requests.session()
 
 
-def http(url="baidu.com", mode=0, pushdata=None):
+def http(http_url="baidu.com", mode=0, http_pushdata=None):
     """0:GET 1:POST"""
-    if pushdata is None:
-        pushdata = {"", }
+    if http_pushdata is None:
+        http_pushdata = {"", }
     if mode == 0:
-        index = web_session.get(url, timeout=5)
+        index = web_session.get(http_url, timeout=5)
     else:
-        index = web_session.post(url, data=pushdata, timeout=5)
+        index = web_session.post(http_url, data=http_pushdata, timeout=5)
     return index
 
 
@@ -132,16 +137,16 @@ def reg():
     if vcode == "geetest":
         data.update(geetest)
 
-    back = http("https://" + url + "/auth/register", 1, data).json()["msg"]
-    return back
+    reg_back = http("https://" + url + "/auth/register", 1, data).json()["msg"]
+    return reg_back
 
 
 def login():
     """登录"""
     data = {"email": str(email_num) + "@qs.com",
             "passwd": "00000000", "code": ""}
-    back = http("https://" + url + "/auth/login", 1, data).json()["msg"]
-    return back
+    login_back = http("https://" + url + "/auth/login", 1, data).json()["msg"]
+    return login_back
 
 
 # 登录用户中心
@@ -149,16 +154,108 @@ def login():
 
 def user():
     """获取用户中心网页HTML"""
-    back = http("https://" + url + "/user", 0).text
+    http_back = http("https://" + url + "/user", 0).text
     # 使用正则表达式获取订阅地址
-    dy_url = re.search("https://[\\w./?=&]+{0}[\\w=&]*".format(tok), back).group(0)
+    dy_url = re.search("https://[\\w./?=&]+{0}[\\w=&]*".format(tok), http_back).group(0)
     return dy_url
 
 
+def __button():
+    """获取订阅链接按钮被按下"""
+    global url, tok, email_num
+    url = entry_url.get()
+    tok = entry_token.get()
+    email_num = get_email()
+    button.configure(state="disabled")
+    entry_email.configure(state="normal")
+    entry_email.select_clear()
+    entry_email.insert(0, str(email_num) + "@qs.com")
+    entry_email.configure(state="readonly")
+    # 注册
+    back_reg = reg()
+    if back_reg == "注册成功！正在进入登录界面":
+        button.configure(text=back_reg)
+        # 登录
+        back_login = login()
+        if back_login == "登录成功":
+            button.configure(text=back_login)
+            # 获取用户中心网页HTML
+            back_user = user()
+            pyperclip.copy(back_user)
+            entry_dy_url.configure(state="normal")
+            entry_dy_url.select_clear()
+            entry_dy_url.insert(0, back_user)
+            entry_dy_url.configure(state="readonly")
+        else:
+            messagebox.showerror("错误", "登录失败！")
+        button.configure(text="获取订阅链接")
+    else:
+        messagebox.showinfo("注册失败", back_reg)
+    button.configure(state="normal")
+
+
 if gui:
-    # TODO: GUI
-    pass
+    try:
+        import pyperclip
+    except ImportError:
+        print('[!] requests 模块未安装，请使用 pip3 install pyperclip 安装')
+        sys.exit(1)
+
+    root = tkinter.Tk()
+    # 窗口标题
+    root.title("订阅链接获取")
+    # 窗口大小
+    root.geometry("245x123")
+    # 窗口图标
+    # root.resizable(0, 0)
+    # 窗口背景颜色
+    root.configure(background="white")
+
+
+    def button_click():
+        """按钮点击事件"""
+        threading.Thread(target=__button).start()
+
+
+    # 窗口内容
+    # 按钮
+    button = tkinter.Button(root, text="获取订阅链接", width=267, font=("微软雅黑", 12), command=button_click)
+    button.pack()
+
+    # 标签_url
+    label_url = tkinter.Label(root, text="订阅源", bg="white", font=("微软雅黑", 10))
+    label_url.place(x=6, y=37)
+    # 输入框_url
+    entry_url = tkinter.Entry(root, width=20, font=("微软雅黑", 10))
+    entry_url.insert(0, url)
+    entry_url.place(x=60, y=37)
+
+    # 标签_token
+    label_token = tkinter.Label(root, text="token", bg="white", font=("微软雅黑", 10))
+    label_token.place(x=7, y=57)
+    # 输入框_token
+    entry_token = tkinter.Entry(root, width=20, font=("微软雅黑", 10))
+    entry_token.insert(0, tok)
+    entry_token.place(x=60, y=57)
+
+    # 标签_邮箱
+    label_email = tkinter.Label(root, text="邮箱", width=6, bg="white", font=("微软雅黑", 10))
+    label_email.place(x=0, y=77)
+    # 文本框_邮箱
+    entry_email = tkinter.Entry(root, width=20, state="readonly", font=("微软雅黑", 12))
+    entry_email.place(x=60, y=77)
+
+    # 标签_订阅链接
+    label_dy_url = tkinter.Label(root, text="订阅地址", bg="white", font=("微软雅黑", 10))
+    label_dy_url.place(x=0, y=97)
+    # 文本框_订阅链接
+    entry_dy_url = tkinter.Entry(root, width=20, state="readonly", font=("微软雅黑", 12))
+    entry_dy_url.place(x=60, y=97)
+
+    root.mainloop()
 else:
+    email_num = get_email()
+    print(str(email_num) + "@qs.com")
     # 注册
     back = reg()
     print(back)
