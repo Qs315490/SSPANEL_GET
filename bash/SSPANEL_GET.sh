@@ -39,11 +39,8 @@ if [ $2 ];then
 fi
 
 # 验证码系统
-vcode=$(getconf vcode geetest)
-if [ "false" = $vcode ]
-then
-	vcode=""
-elif [ "geetest" = $vcode ]
+vcode=$(getconf vcode)
+if [ "geetest" = $vcode ]
 then
 	vcode="&geetest_challenge=d1fe173d08e959397adf34b1d77e88d7f7&geetest_validate=75775555755555e84_555557757550_755555775579b13&geetest_seccode=75775555755555e84_555557757550_755555775579b13|jordan"
 fi
