@@ -22,10 +22,6 @@ getconf()
 	fi
 }
 
-# URL
-url=$( getconf url cxkv2.xyz )
-tok=$( getconf tok ?mu=2 )
-
 # 此处为解析项
 if [ $1 ];then
 	if [ -f $1 ];then
@@ -36,6 +32,14 @@ if [ $1 ];then
 fi
 if [ $2 ];then
 	tok=$2
+fi
+
+# 获取配置项
+if [! $url ];then
+	url=$( getconf url cxkv2.xyz )
+fi
+if [! $tok ];then
+	tok=$( getconf tok u=2 )
 fi
 
 # 验证码系统
