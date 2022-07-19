@@ -1,6 +1,7 @@
 *.bak
 *.exe
 *.txt
+!requirements.txt
 *.spec
 .venv
 cookit

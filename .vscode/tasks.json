@@ -1,0 +1,38 @@
+{
+	// See https://go.microsoft.com/fwlink/?LinkId=733558
+	// for the documentation about the tasks.json format
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "编译 Python 文件(使用虚拟环境)",
+			"type": "shell",
+			"command": ".venv/Scripts/pyinstaller",
+			"args": [
+				"-F",
+				"-w",
+				"-i",
+				"${workspaceFolder}/SSPANEL_GET.ico",
+				"${workspaceFolder}/python/SSPANEL_GET.py"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"label": "安装 Python 依赖(使用虚拟环境)",
+			"type": "shell",
+			"command": ".venv/Scripts/pip",
+			"args": [
+				"install",
+				"-r",
+				"${workspaceFolder}/python/requirements.txt"
+			]
+		},
+		{
+			"label": "创建 Python 虚拟环境",
+			"type": "shell",
+			"command": "python -m venv .venv"
+		}
+	]
+}
