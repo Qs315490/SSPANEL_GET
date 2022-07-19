@@ -1,4 +1,8 @@
 *.bak
 *.exe
 *.txt
+*.spec
+.venv
 cookit
+build
+dist

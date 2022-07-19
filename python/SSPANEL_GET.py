@@ -11,10 +11,10 @@ except ImportError:
     print('[!] requests 模块未安装，请使用 pip3 install requests 安装')
     sys.exit(1)
 
-url = "cxkv2.xyz"
-tok = "u=2"
+url = "52vpn.club"
+tok = "b=3"
 vcode = "geetest"
-gui = False
+gui = True if sys.platform == 'win32' else False
 isDebug = True if sys.gettrace() else False
 
 
