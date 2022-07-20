@@ -5,6 +5,17 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
+			"name": "Launch Program",
+			"program": "${file}",
+			"request": "launch",
+			"console": "integratedTerminal",
+			"skipFiles": [
+				"<node_internals>/**"
+			],
+			"type": "node"
+		},
+
+		{
 			"name": "Python: 当前文件",
 			"type": "python",
 			"request": "launch",

@@ -107,11 +107,9 @@ def get_email() -> int:
 web_session = requests.session()
 
 
-def http(http_url="baidu.com", mode=0, http_pushdata=None):
+def http(http_url="baidu.com", http_pushdata=None):
     """0:GET 1:POST"""
     if http_pushdata is None:
-        http_pushdata = {"", }
-    if mode == 0:
         index = web_session.get(http_url, timeout=5)
     else:
         index = web_session.post(http_url, data=http_pushdata, timeout=5)
@@ -137,7 +135,7 @@ def reg():
     if vcode == "geetest":
         data.update(geetest)
 
-    reg_back = http("https://" + url + "/auth/register", 1, data).json()["msg"]
+    reg_back = http("https://" + url + "/auth/register", data).json()["msg"]
     return reg_back
 
 
@@ -145,7 +143,7 @@ def login():
     """登录"""
     data = {"email": str(email_num) + "@qs.com",
             "passwd": "00000000", "code": ""}
-    login_back = http("https://" + url + "/auth/login", 1, data).json()["msg"]
+    login_back = http("https://" + url + "/auth/login", data).json()["msg"]
     return login_back
 
 
@@ -154,7 +152,7 @@ def login():
 
 def user():
     """获取用户中心网页HTML"""
-    http_back = http("https://" + url + "/user", 0).text
+    http_back = http("https://" + url + "/user").text
     # 使用正则表达式获取订阅地址
     dy_url = re.search("https://[\\w./?=&]+{0}[\\w=&]*".format(tok), http_back).group(0)
     return dy_url
