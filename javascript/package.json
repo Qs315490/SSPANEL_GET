@@ -1,10 +1,10 @@
 {
   "name": "sspanel_get",
   "version": "1.0.0",
-  "main": "SSPANEL_GET.ts",
+  "main": "SSPANEL_GET.js",
   "devDependencies": {},
   "scripts": {
-    "test": "node SSPANEL_GET.ts"
+    "test": "node SSPANEL_GET.js"
   },
   "author": "Qs315490",
   "license": "MPL-2.0",
