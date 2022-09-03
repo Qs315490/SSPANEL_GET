@@ -59,11 +59,11 @@ echo $email@qs.com
 curl_path="curl -4 -s"
 
 # 注册
-echo -e `$curl_path "https://$url/auth/register" -X POST -d "email=$email%40qs.com&name=zido&passwd=00000000&repasswd=00000000&wechat=$email&imtype=2&code=gdVi$vcode" -c cookit`
+echo -e `$curl_path "https://$url/auth/register" -X POST -d "email=$email%40qs.com&name=zido&passwd=00000000&repasswd=00000000&wechat=$email&imtype=2$vcode" -c cookie`
 # 登录
-echo -e `$curl_path -b cookit "https://$url/auth/login" -X POST -d "email=$email%40qs.com&passwd=00000000&code" -c cookit`
+echo -e `$curl_path -b cookie "https://$url/auth/login" -X POST -d "email=$email%40qs.com&passwd=00000000&code" -c cookie`
 # 获取订阅码
-$curl_path -b cookit "https://$url/user" | sed 's/"/\n/g' | grep "$tok" | head -n 1 > add.txt
+$curl_path -b cookie "https://$url/user" | sed 's/"/\n/g' | grep "$tok" | head -n 1 > add.txt
 
 # 输出
 if [ `ls -l add.txt|awk '{print $5}'` != 0 ]
