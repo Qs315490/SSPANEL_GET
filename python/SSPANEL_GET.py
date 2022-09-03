@@ -11,7 +11,7 @@ except ImportError:
     print('[!] requests 模块未安装，请使用 pip3 install requests 安装')
     sys.exit(1)
 
-url = "52vpn.club"
+url = "2.52vpn.club"
 tok = "b=3"
 vcode = "geetest"
 gui = True if sys.platform == 'win32' else False

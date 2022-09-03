@@ -35,10 +35,10 @@ if [ $2 ];then
 fi
 
 # 获取配置项
-if [! $url ];then
+if [ ! $url ];then
 	url=$( getconf url cxkv2.xyz )
 fi
-if [! $tok ];then
+if [ ! $tok ];then
 	tok=$( getconf tok u=2 )
 fi
 
@@ -59,7 +59,7 @@ echo $email@qs.com
 curl_path="curl -4 -s"
 
 # 注册
-echo -e `$curl_path "https://$url/auth/register" -X POST -d "email=$email%40qs.com&name=zido&passwd=00000000&repasswd=00000000&wechat=$email&imtype=2$vcode" -c cookit`
+echo -e `$curl_path "https://$url/auth/register" -X POST -d "email=$email%40qs.com&name=zido&passwd=00000000&repasswd=00000000&wechat=$email&imtype=2&code=gdVi$vcode" -c cookit`
 # 登录
 echo -e `$curl_path -b cookit "https://$url/auth/login" -X POST -d "email=$email%40qs.com&passwd=00000000&code" -c cookit`
 # 获取订阅码
