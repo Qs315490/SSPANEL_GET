@@ -23,7 +23,7 @@ def do_help():
     -u,--url URL    : 设置 URL
     -t,-token TOKEN : 设置 TOKEN
     --h,--help      : 显示这个帮助
-    -g,--gui        : 开启图形界面 (没有实现)""")
+    -g,--gui        : 开启图形界面""")
     quit()
 
 
