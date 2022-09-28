@@ -5,8 +5,7 @@ Chinese Language：
 |-|-|
 |SSPANEL_GET.sh|软件Linux Shell原型|
 |ssru6.pw.yml|shell脚本的配置文件样品|
-|SSPANEL_GET.e|软件易语言实现|
-|SSPANEL_GET.ini|易语言版配置文件|
+|SSPANEL_GET.py|软件Python3实现|
 |SSPANEL_GET.ico|软件图标|
 
 ## ToDo
