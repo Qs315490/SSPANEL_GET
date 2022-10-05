@@ -1,4 +1,4 @@
-const https = require('https');
+const request = require ('request');
 
 class SSPANEL {
 	url = '';
@@ -7,7 +7,7 @@ class SSPANEL {
 	email = '';
 	dy_url = '';
 
-	constructor(url = "52vpn.club", token = "b=3", vcode = "geetest") {
+	constructor(url = "2.52vpn.club", token = "b=3", vcode = "geetest") {
 		this.url = url;
 		this.token = token;
 		this.vcode = vcode;
@@ -23,78 +23,92 @@ class SSPANEL {
 	http(path, pushdata = '') {
 		// TODO 实现http请求
 		const options = {
-			hostname: this.url,
-			path: path,
-			securet: false
+			//securet: false,
+			timeout: 15
 		}
+		const url = `https://${this.url}/${path}`;
 		if (pushdata == '') {
 			// GET
 			options.method = 'GET';
-			options.port = 80;
 			options.headers = {
 				'Cookie': this.#cookie
-			}
+			};
+			request(url, options, (err, _res, body) => {
+				if (err) {
+					return console.error(err);
+				};
+				return body
+			})
 		} else {
 			// POST
 			options.method = 'POST';
-			options.port = 443;
 			options.headers = {
-				'Content-Type': 'application/x-www-form-urlencoded',
-				'Content-Length': Buffer.byteLength(pushdata),
 				'Cookie': this.#cookie
-			}
-		}
-		
-		var back_data = '';
-
-		const req = https.request(options, (res) => {
-			if (res.statusCode == 200) {
-				this.#cookie = res.headers['set-cookie']
-			}
-			res.on('data', (data) => {
-				back_data = data.toString();
+			};
+			options.form = pushdata;
+			// TODO 未知错误
+			return request.post(url, options, (err, res, body) => {
+				if (err) {
+					return console.error(err);
+				};
+				if (res.statusCode == 200) {
+					this.#cookie = res.headers.cookie;
+				}
+				console.log(body);
+				return body
 			});
-		});
-		req.on('error', (e) => {
-			console.log(e);
-		});
-		if (pushdata != '') {
-			req.write(pushdata);
 		}
-		req.end();
-		return back_data;
 	}
 
 	register() {
 		if (this.email == '') {
 			this.random_email();
 		}
-		var data = `email=${this.email}%40qs.com&name=zido&passwd=00000000&repasswd=00000000&wechat=${this.email}&imtype=2`;
+		var data = {
+			email: `${this.email}@qs.com`,
+			name: 'zido',
+			passwd: '00000000',
+			repasswd: '00000000',
+			wechat: `${this.email}`,
+			imtype: 2
+		}
 		switch (this.vcode) {
 			case 'geetest':
-				data += '&geetest_challenge=d1fe173d08e959397adf34b1d77e88d7f7&geetest_validate=75775555755555e84_555557757550_755555775579b13&geetest_seccode=75775555755555e84_555557757550_755555775579b13|jordan';
+				//data += '&geetest_challenge=d1fe173d08e959397adf34b1d77e88d7f7&geetest_validate=75775555755555e84_555557757550_755555775579b13&geetest_seccode=75775555755555e84_555557757550_755555775579b13|jordan';
+				data = Object.assign(data, {
+					geetest_challenge: 'd1fe173d08e959397adf34b1d77e88d7f7',
+					geetest_validate: '75775555755555e84_555557757550_755555775579b13',
+					geetest_seccode: '75775555755555e84_555557757550_755555775579b13|jordan'
+				});
 				break;
-			case '':
-			case 'false':
+			case 'false' || '':
 				break;
 			default:
 				data = Object.assign(data, this.vcode)
 				break;
 		}
-		var info = this.http('/auth/register', data);
+		var info = this.http('auth/register', data);
 		console.log(info);
 	}
 	login() {
-		var data = `email=${this.email}%40qs.com&passwd=00000000&code`;
-		var info = this.http('/auth/login', data);
+		//var data = `email=${this.email}%40qs.com&passwd=00000000&code`;
+		let data = {
+			email: `${this.email}@qs.com`,
+			passwd: '00000000',
+			code
+		}
+		var info = this.http('auth/login', data);
 		console.log(info);
 	}
 	user() {
-		var info=this.http('/user/');
+		var info = this.http('user');
+		let reg = new RegExp(`https://[\\w./?=&]+${this.token}[\\w=&]*`);
+		return reg.exec(info);
 	}
 }
 
 var sspanel = new SSPANEL();
 sspanel.register();
 sspanel.login();
-sspanel.user();
+var str = sspanel.user();
+console.log(str);

@@ -9,7 +9,7 @@ Chinese Language：
 |SSPANEL_GET.ico|软件图标|
 
 ## ToDo
-C 语言版本和Python3 GUI版本
+C 语言版本和NodeJS版本
 
 # LICENSE
 
