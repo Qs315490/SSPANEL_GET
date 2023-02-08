@@ -1,4 +1,3 @@
-const request = require ('request');
 
 class SSPANEL {
 	url = '';
@@ -20,7 +19,7 @@ class SSPANEL {
 	}
 
 	#cookie = '';
-	http(path, pushdata = '') {
+	async http(path, pushdata = '') {
 		// TODO 实现http请求
 		const options = {
 			//securet: false,
@@ -33,11 +32,10 @@ class SSPANEL {
 			options.headers = {
 				'Cookie': this.#cookie
 			};
-			request(url, options, (err, _res, body) => {
-				if (err) {
-					return console.error(err);
-				};
-				return body
+			await fetch(url,options).then(data => data.text()).then(data => {
+
+			}).catch(err => {
+				console.error(err);
 			})
 		} else {
 			// POST
@@ -46,18 +44,18 @@ class SSPANEL {
 				'Cookie': this.#cookie
 			};
 			options.form = pushdata;
-			// TODO 未知错误
-			return request.post(url, options, (err, res, body) => {
-				if (err) {
-					return console.error(err);
-				};
-				if (res.statusCode == 200) {
+			await fetch(url, options).then(res => {
+				if (res.status == 200) {
 					this.#cookie = res.headers.cookie;
 				}
-				console.log(body);
-				return body
-			});
+				return res.text()
+			}).then(data => {
+
+			}).catch(err => {
+				console.error(err);
+			})
 		}
+		// TODO: 未知错误
 	}
 
 	register() {
