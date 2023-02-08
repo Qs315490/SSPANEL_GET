@@ -7,8 +7,5 @@
   },
   "author": "Qs315490",
   "license": "MPL-2.0",
-  "description": "兼容使用`SSPANEL_GET`搭建的机场，自动注册、登录、获取订阅地址。",
-  "dependencies": {
-    "request": "^2.88.2"
-  }
+  "description": "兼容使用`SSPANEL_GET`搭建的机场，自动注册、登录、获取订阅地址。"
 }
