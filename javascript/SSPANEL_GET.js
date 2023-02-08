@@ -33,7 +33,7 @@ class SSPANEL {
 				'Cookie': this.#cookie
 			};
 			await fetch(url,options).then(data => data.text()).then(data => {
-
+				return data
 			}).catch(err => {
 				console.error(err);
 			})
@@ -48,9 +48,9 @@ class SSPANEL {
 				if (res.status == 200) {
 					this.#cookie = res.headers.cookie;
 				}
-				return res.text()
+				return res.json()
 			}).then(data => {
-
+				return data
 			}).catch(err => {
 				console.error(err);
 			})
