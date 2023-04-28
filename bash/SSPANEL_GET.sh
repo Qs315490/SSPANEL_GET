@@ -12,14 +12,7 @@ getconf()
 	then
 		conf=$( cat $configfile | grep "$1" | awk '{print $2}' )
 	fi
-	if [ $conf ]
-	then
-		echo "$conf"
-	else
-		# 写出配置项
-		# echo "$1: $2">>$configfile
-		echo $2
-	fi
+	echo ${conf:-$2}
 }
 
 # 此处为解析脚本接收的参数
@@ -30,16 +23,11 @@ if [ $1 ];then
 		url=$1
 	fi
 fi
-if [ $2 ];then
-	tok=$2
-fi
+tok=${2:-`getconf tok u=2`}
 
 # 获取配置项
 if [ ! $url ];then
 	url=$( getconf url cxkv2.xyz )
-fi
-if [ ! $tok ];then
-	tok=$( getconf tok u=2 )
 fi
 
 # 验证码系统
