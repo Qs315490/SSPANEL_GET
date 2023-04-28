@@ -23,16 +23,14 @@ if [ $1 ];then
 		url=$1
 	fi
 fi
-tok=${2:-`getconf tok u=2`}
+tok=${2:-`getconf tok b=3`}
 
 # 获取配置项
-if [ ! $url ];then
-	url=$( getconf url cxkv2.xyz )
-fi
+url=${url:-$( getconf url 5.52vpn.club )}
 
 # 验证码系统
 vcode=$(getconf vcode)
-if [ "geetest" = $vcode ]
+if [ "geetest" == "$vcode" ]
 then
 	vcode="&geetest_challenge=d1fe173d08e959397adf34b1d77e88d7f7&geetest_validate=75775555755555e84_555557757550_755555775579b13&geetest_seccode=75775555755555e84_555557757550_755555775579b13|jordan"
 fi
