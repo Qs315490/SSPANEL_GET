@@ -20,7 +20,7 @@
 				"-w",
 				"-i",
 				"${workspaceFolder}/SSPANEL_GET.ico",
-				"${workspaceFolder}/python/SSPANEL_GET.py"
+				"${workspaceFolder}/python/GUI.py"
 			],
 			"group": {
 				"kind": "build",
