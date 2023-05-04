@@ -47,14 +47,14 @@ curl_path="curl -4 -s"
 # 注册
 back=`$curl_path "https://$url/auth/register" -X POST -d "email=$email%40qs.com&name=zido&passwd=00000000&repasswd=00000000&wechat=$email&imtype=2$vcode" -c cookie`
 echo -e $back
-if ! echo $back|grep -q 1;then
+if ! echo -e $back|grep -q 1;then
 	echo 注册失败
 	exit
 fi
 # 登录
 back=`$curl_path -b cookie "https://$url/auth/login" -X POST -d "email=$email%40qs.com&passwd=00000000&code" -c cookie`
 echo -e $back
-if ! echo $back|grep -q 1;then
+if ! echo -e $back|grep -q 1;then
 	echo 登录失败
 	exit
 fi
