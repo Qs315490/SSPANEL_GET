@@ -15,6 +15,8 @@ class SSPANEL_GET:
         self.vcode = vcode
         self.session = requests.session()
         self.email_num = self.get_email()
+        self.domain = 'qq.com'
+        self.email_code=''
         
     def get_email(self) -> int:
     # 生成邮箱
@@ -29,8 +31,16 @@ class SSPANEL_GET:
         
         return req(http_url, data=http_pushdata, timeout=5)
 
+    def send_email(self,email=''):
+        if email=='':
+            email = str(self.email_num) + f"@{self.domain}"
+        push_data={
+            "email": email,
+        }
+        back = self.http('send',push_data).json()
+        return back
+
     def reg(self):
-        """注册"""
         """注册"""
         # geetest验证的POST_data
         geetest = {"geetest_challenge": "98dce83da57b0395e163467c9dae521b1f",
@@ -38,7 +48,7 @@ class SSPANEL_GET:
                 "geetest_seccode": "bebe713_e80_222ebc4a0|jordan"}
 
         # POST_data
-        data = {"email": str(self.email_num) + "@qq.com",
+        data = {"email": str(self.email_num) + f"@{self.domain}",
                 "name": "zdzc",
                 "passwd": "00000000",
                 "repasswd": "00000000",
@@ -46,15 +56,20 @@ class SSPANEL_GET:
                 "imtype": "2"}
 
         # 添加验证方式
-        if self.vcode == "geetest":
+        if "geetest" in self.vcode:
             data.update(geetest)
+
+        if "email" in self.vcode:
+            # TODO: 邮箱验证码
+            # 需要自己处理验证码
+            data.update({"emailcode": self.email_code})
 
         reg_back = self.http("auth/register", data).json()["msg"]
         return reg_back
     
     def login(self):
         """登录"""
-        data = {"email": str(self.email_num) + "@qq.com",
+        data = {"email": str(self.email_num) + f"@{self.domain}",
                 "passwd": "00000000", "code": ""}
         login_back = self.http("auth/login", data).json()["msg"]
         return login_back

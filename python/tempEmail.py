@@ -16,7 +16,7 @@ class tempEmail:
     
     def register(self):
         """注册邮箱"""
-        back = self.session.post(self.api_url+'accounts',json={'address':self.email_id+'@'+self.get_domains(),'password':self.passwd}).json()
+        back = self.session.post(self.api_url+'accounts',json={'address':self.email_id + '@' + self.get_domains(),'password':self.passwd}).json()
         try:
             print(back['hydra:description'])
         except:
@@ -27,7 +27,7 @@ class tempEmail:
     def login(self):
         """登录邮箱"""
         if self.email == '':
-            self.email = self.email_id+'@'+self.get_domains()
+            self.email = self.email_id + '@' + self.get_domains()
         back = self.session.post(self.api_url+'token',json={'address':self.email,'password':self.passwd}).json()
         try:
             self.session.headers['Authorization'] = 'Bearer '+back['token']
