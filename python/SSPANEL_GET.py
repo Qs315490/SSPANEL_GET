@@ -38,7 +38,7 @@ class SSPANEL_GET:
                 "geetest_seccode": "bebe713_e80_222ebc4a0|jordan"}
 
         # POST_data
-        data = {"email": str(self.email_num) + "@qs.com",
+        data = {"email": str(self.email_num) + "@qq.com",
                 "name": "zdzc",
                 "passwd": "00000000",
                 "repasswd": "00000000",
@@ -54,7 +54,7 @@ class SSPANEL_GET:
     
     def login(self):
         """登录"""
-        data = {"email": str(self.email_num) + "@qs.com",
+        data = {"email": str(self.email_num) + "@qq.com",
                 "passwd": "00000000", "code": ""}
         login_back = self.http("auth/login", data).json()["msg"]
         return login_back
