@@ -23,10 +23,11 @@ if [ $1 ];then
 		url=$1
 	fi
 fi
-tok=${2:-`getconf tok b=3`}
 
 # 获取配置项
 url=${url:-$( getconf url 5.52vpn.club )}
+tok=${2:-`getconf tok b=3`}
+domain=${2:-`getconf domain qq.com`}
 
 # 验证码系统
 vcode=$(getconf vcode)
@@ -39,20 +40,20 @@ fi
 email=$(tr -dc 0-9 < /dev/urandom | head -c10)
 
 # 邮箱显示
-echo $email@qs.com
+echo $email@$domain
 
 #curl环境
 curl_path="curl -4 -s"
 
 # 注册
-back=`$curl_path "https://$url/auth/register" -X POST -d "email=$email%40qs.com&name=zido&passwd=00000000&repasswd=00000000&wechat=$email&imtype=2$vcode" -c cookie`
+back=`$curl_path "https://$url/auth/register" -X POST -d "email=$email%40$domain&name=zido&passwd=00000000&repasswd=00000000&wechat=$email&imtype=2$vcode" -c cookie`
 echo -e $back
 if ! echo -e $back|grep -q 1;then
 	echo 注册失败
 	exit
 fi
 # 登录
-back=`$curl_path -b cookie "https://$url/auth/login" -X POST -d "email=$email%40qs.com&passwd=00000000&code" -c cookie`
+back=`$curl_path -b cookie "https://$url/auth/login" -X POST -d "email=$email%40$domain&passwd=00000000&code" -c cookie`
 echo -e $back
 if ! echo -e $back|grep -q 1;then
 	echo 登录失败

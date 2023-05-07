@@ -64,15 +64,18 @@ class SSPANEL_GET:
             # 需要自己处理验证码
             data.update({"emailcode": self.email_code})
 
-        reg_back = self.http("auth/register", data).json()["msg"]
-        return reg_back
+        reg_back = self.http("auth/register", data)
+        return reg_back.json()["msg"]
     
     def login(self):
         """登录"""
         data = {"email": str(self.email_num) + f"@{self.domain}",
                 "passwd": "00000000", "code": ""}
-        login_back = self.http("auth/login", data).json()["msg"]
-        return login_back
+        login_back = self.http("auth/login", data)
+        try:
+            return login_back.json()["msg"]
+        except:
+            return "登录成功"
 
     def user(self):
         """获取用户中心网页HTML"""

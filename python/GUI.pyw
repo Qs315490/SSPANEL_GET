@@ -100,12 +100,9 @@ def __button():
     global url, tok, email_num
     url = entry_url.get()
     tok = entry_token.get()
-    email_num = sspanel_get.get_email()
+    email_num = sspanel_get.email_num
     button.configure(state="disabled")
-    entry_email.configure(state="normal")
-    entry_email.select_clear()
-    entry_email.insert(0, str(email_num) + "@qs.com")
-    entry_email.configure(state="readonly")
+    email_text.set(str(email_num) + '@' + sspanel_get.domain)
     # 注册
     back_reg = sspanel_get.reg()
     if back_reg == "注册成功！正在进入登录界面":
@@ -117,10 +114,8 @@ def __button():
             # 获取用户中心网页HTML
             back_user = sspanel_get.get_sub(sspanel_get.user())
             pyperclip.copy(back_user)
-            entry_dy_url.configure(state="normal")
-            entry_dy_url.select_clear()
-            entry_dy_url.insert(0, back_user)
-            entry_dy_url.configure(state="readonly")
+            url_text.set(back_user)
+            
         else:
             messagebox.showerror("错误", "登录失败！")
         button.configure(text="获取订阅链接")
@@ -177,14 +172,18 @@ if gui:
     label_email = tkinter.Label(root, text="邮箱", width=6, bg="white", font=("微软雅黑", 10))
     label_email.place(x=0, y=77)
     # 文本框_邮箱
-    entry_email = tkinter.Entry(root, width=20, state="readonly", font=("微软雅黑", 12))
+    email_text = tkinter.StringVar()
+    entry_email = tkinter.Entry(root, width=20, state="readonly", font=("微软雅黑", 12),textvariable=email_text)
+    entry_email.configure(state="readonly")
     entry_email.place(x=60, y=77)
 
     # 标签_订阅链接
     label_dy_url = tkinter.Label(root, text="订阅地址", bg="white", font=("微软雅黑", 10))
     label_dy_url.place(x=0, y=97)
     # 文本框_订阅链接
-    entry_dy_url = tkinter.Entry(root, width=20, state="readonly", font=("微软雅黑", 12))
+    url_text = tkinter.StringVar()
+    entry_dy_url = tkinter.Entry(root, width=20, state="readonly", font=("微软雅黑", 12),textvariable=url_text)
+    entry_dy_url.configure(state="readonly")
     entry_dy_url.place(x=60, y=97)
 
     root.mainloop()
